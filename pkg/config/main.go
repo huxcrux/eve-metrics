@@ -16,8 +16,14 @@ type Config struct {
 	Notification   NotificationInput `yaml:"notifications"`
 	Discordwebhook string            `yaml:"discordwebhook"`
 	ProxyURL       string            `yaml:"proxyurl"`
+	Webhooks       []Webhook         `yaml:"webhooks"`
 }
 
+type Webhook struct {
+	URL                      string  `yaml:"url"`
+	AllAllainceSubscriptions bool    `yaml:"all_allaince_subscriptions"`
+	AllianceSubscriptions    []int32 `yaml:"alliance_subscriptions"`
+}
 type CharacterInput struct {
 	ID    int    `yaml:"id"`
 	Token string `yaml:"token"`

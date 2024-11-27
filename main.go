@@ -30,11 +30,20 @@ func main() {
 	// 	}
 	// }()
 
-	// start notification loop
-	fmt.Println("Starting notification loop, will run every 60 seconds")
+	// Start all other notification loops
+	fmt.Println("Starting Alliance/Coporation contact loop")
+	counter := 0
 	for {
+		fmt.Println("Running alliance/Coporation contact loop")
 		notificationController.Run()
 		time.Sleep(60 * time.Second)
+		// TODO: replace by a timestamp stored in data file
+		if counter > 15 {
+			fmt.Println("Starting Alliance Members loop")
+			notificationController.RunAllianceMembers()
+			counter = 0
+		}
+		counter++
 	}
 
 	// start reconciler loop

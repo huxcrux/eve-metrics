@@ -104,17 +104,20 @@ func (nc *NotificationController) Run() {
 		fmt.Println("Error fetching alliance contacts:", err)
 	}
 
-	// Check Alliance Corporations
-	err = nc.FetchAllianceCorporations()
-	if err != nil {
-		fmt.Println("Error fetching alliance corporations:", err)
-	}
-
 	// Check Corporation Contacts
 	err = nc.FetchCoporationContacts()
 	if err != nil {
 		fmt.Println("Error fetching corporation contacts:", err)
 	}
+}
 
-	fmt.Println("Finished running notifications")
+// UpdateMetrics updates the cached metrics in the background
+func (nc *NotificationController) RunAllianceMembers() {
+
+	// Check Alliance Corporations
+	err := nc.FetchAllianceCorporations()
+	if err != nil {
+		fmt.Println("Error fetching alliance corporations:", err)
+	}
+
 }
