@@ -2,6 +2,7 @@ package collector
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/huxcrux/eve-metrics/pkg/helpers"
 	"github.com/prometheus/client_golang/prometheus"
@@ -42,7 +43,7 @@ func (cc *CachedCollector) GenerateIndustryJobs(characterID int) error {
 
 	for job := range induJobs {
 		// Calculate seconds left
-		time := induJobs[job].EndDate.Unix()
+		endtime := induJobs[job].EndDate.Unix()
 		blueprintName := helpers.GetBlueprintName(int(induJobs[job].BlueprintTypeId), cc.characters[characterID].ESIClient)
 		structureName := helpers.GetStructureName(induJobs[job].StationId, cc.characters[characterID].ESIClient)
 		structureSystem := helpers.GetStructureSystem(induJobs[job].StationId, cc.characters[characterID].ESIClient)
@@ -64,9 +65,30 @@ func (cc *CachedCollector) GenerateIndustryJobs(characterID int) error {
 			fmt.Sprintf("%d", induJobs[job].Runs),
 			induJobs[job].Status,
 			fmt.Sprintf("%d", induJobs[job].SuccessfulRuns),
-		).Set(float64(time))
+		).Set(float64(endtime))
 		// fmt.Printf("Industry Job: %+v\n", induJobs[job])
 		// fmt.Printf("Structure Name: %s, System: %s, Owner: %s\n", structureName, structureSystem, structureOwner)
+
+		// Notification logic
+		// Check if end date is in the past
+		now := time.Now().Unix()
+		timeLeft := endtime - now
+		if timeLeft < 0 {
+			jobdata := helpers.CompletedIndustryJobs{
+				Job:             induJobs[job],
+				BlueprintName:   blueprintName,
+				StructureName:   structureName,
+				StructureSystem: structureSystem,
+				StructureOwner:  structureOwner,
+				CharacterName:   characterName,
+				Activity:        activity,
+			}
+
+			err := helpers.IndustryJobCompleted(jobdata)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
 	return nil

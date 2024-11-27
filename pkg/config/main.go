@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -10,14 +9,16 @@ import (
 )
 
 type Config struct {
-	Characters []models.CharacterInput `yaml:"characters"`
+	Characters     []models.CharacterInput  `yaml:"characters"`
+	Notification   models.NotificationInput `yaml:"notifications"`
+	Discordwebhook string                   `yaml:"discordwebhook"`
 }
 
-func ReadConfig() []models.CharacterInput {
-	// Path to your YAML file
+var (
+	filePath = "config.yml"
+)
 
-	// Path to your YAML file
-	filePath := "config.yml"
+func ReadConfig() Config {
 
 	// Read the YAML file
 	data, err := os.ReadFile(filePath)
@@ -32,10 +33,5 @@ func ReadConfig() []models.CharacterInput {
 		log.Fatalf("Failed to parse YAML: %v", err)
 	}
 
-	// Print the parsed characters
-	for i, character := range config.Characters {
-		fmt.Printf("Character %d: %+v\n", i+1, character)
-	}
-
-	return config.Characters
+	return config
 }

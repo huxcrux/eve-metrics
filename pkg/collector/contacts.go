@@ -29,15 +29,7 @@ func (cc *CachedCollector) FetchCharaterContacts(characterID int) error {
 
 	characterName := helpers.GetCharacterName(int32(cc.characters[characterID].ID), cc.characters[characterID].ESIClient)
 	for _, contact := range contact {
-		contactName := ""
-		switch contact.ContactType {
-		case "character":
-			contactName = helpers.GetCharacterName(contact.ContactId, cc.characters[characterID].ESIClient)
-		case "corporation":
-			contactName = helpers.GetCorporationName(contact.ContactId, cc.characters[characterID].ESIClient)
-		case "alliance":
-			contactName = helpers.GetAllianceName(contact.ContactId, cc.characters[characterID].ESIClient)
-		}
+		contactName := helpers.GetContactName(contact.ContactType, contact.ContactId, cc.characters[characterID].ESIClient)
 		labelNames := []string{}
 		if contact.LabelIds != nil {
 			for _, labelId := range contact.LabelIds {
@@ -70,17 +62,8 @@ func (cc *CachedCollector) FetchCorporationContacts(characterID int) error {
 	}
 
 	for _, contact := range contact {
-		contactName := ""
-		switch contact.ContactType {
-		case "character":
-			contactName = helpers.GetCharacterName(contact.ContactId, cc.characters[characterID].ESIClient)
-		case "corporation":
-			contactName = helpers.GetCorporationName(contact.ContactId, cc.characters[characterID].ESIClient)
-		case "alliance":
-			contactName = helpers.GetAllianceName(contact.ContactId, cc.characters[characterID].ESIClient)
-		}
+		contactName := helpers.GetContactName(contact.ContactType, contact.ContactId, cc.characters[characterID].ESIClient)
 		cc.cache["corporation_contact"].WithLabelValues(contactName, contact.ContactType, strconv.FormatBool(contact.IsWatched), fmt.Sprint(contact.LabelIds)).Set(float64(contact.Standing))
-
 	}
 
 	return nil
@@ -99,21 +82,13 @@ func (cc *CachedCollector) FetchAllianceContacts(characterID int) error {
 	}
 
 	// Fetch player count
-	contact, _, err := cc.characters[characterID].ESIClient.Client.ESI.ContactsApi.GetAlliancesAllianceIdContacts(cc.characters[characterID].ESIClient.Ctx, int32(cc.characters[characterID].AllianceID), nil)
+	contacts, _, err := cc.characters[characterID].ESIClient.Client.ESI.ContactsApi.GetAlliancesAllianceIdContacts(cc.characters[characterID].ESIClient.Ctx, int32(cc.characters[characterID].AllianceID), nil)
 	if err != nil {
 		return err
 	}
 
-	for _, contact := range contact {
-		contactName := ""
-		switch contact.ContactType {
-		case "character":
-			contactName = helpers.GetCharacterName(contact.ContactId, cc.characters[characterID].ESIClient)
-		case "corporation":
-			contactName = helpers.GetCorporationName(contact.ContactId, cc.characters[characterID].ESIClient)
-		case "alliance":
-			contactName = helpers.GetAllianceName(contact.ContactId, cc.characters[characterID].ESIClient)
-		}
+	for _, contact := range contacts {
+		contactName := helpers.GetContactName(contact.ContactType, contact.ContactId, cc.characters[characterID].ESIClient)
 		labelNames := []string{}
 		if contact.LabelIds != nil {
 			for _, labelId := range contact.LabelIds {

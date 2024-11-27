@@ -18,7 +18,7 @@ func (cc *CachedCollector) FetchAllianceCorporations(characterID int) error {
 		)
 	}
 
-	corporations, _, err := cc.characters[characterID].ESIClient.Client.ESI.AllianceApi.GetAlliancesAllianceIdCorporations(cc.characters[characterID].ESIClient.Ctx, int32(cc.characters[characterID].ID), nil)
+	corporations, _, err := cc.characters[characterID].ESIClient.Client.ESI.AllianceApi.GetAlliancesAllianceIdCorporations(cc.characters[characterID].ESIClient.Ctx, int32(cc.characters[characterID].AllianceID), nil)
 	if err != nil {
 		return err
 	}
