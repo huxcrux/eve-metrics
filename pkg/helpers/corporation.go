@@ -3,10 +3,10 @@ package helpers
 import (
 	"fmt"
 
-	esiClient "github.com/huxcrux/eve-metrics/pkg/esi_client"
+	"github.com/huxcrux/eve-metrics/pkg/models"
 )
 
-func GetCorporationName(id int32, esiClient esiClient.ESIClient) string {
+func GetCorporationName(id int32, esiClient models.ESIClient) string {
 	// Fetch owner corporation details
 	corporation, _, err := esiClient.Client.ESI.CorporationApi.GetCorporationsCorporationId(esiClient.Ctx, id, nil)
 	if err != nil {

@@ -3,10 +3,10 @@ package helpers
 import (
 	"fmt"
 
-	esiClient "github.com/huxcrux/eve-metrics/pkg/esi_client"
+	"github.com/huxcrux/eve-metrics/pkg/models"
 )
 
-func GetStructureName(structureID int64, esiClient esiClient.ESIClient) string {
+func GetStructureName(structureID int64, esiClient models.ESIClient) string {
 	// Lookup structure name
 	structure, _, err := esiClient.Client.ESI.UniverseApi.GetUniverseStructuresStructureId(esiClient.Ctx, int64(structureID), nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func GetStructureName(structureID int64, esiClient esiClient.ESIClient) string {
 
 }
 
-func GetStructureSystem(structureID int64, esiClient esiClient.ESIClient) string {
+func GetStructureSystem(structureID int64, esiClient models.ESIClient) string {
 	// Lookup structure system
 	structure, _, err := esiClient.Client.ESI.UniverseApi.GetUniverseStructuresStructureId(esiClient.Ctx, int64(structureID), nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func GetStructureSystem(structureID int64, esiClient esiClient.ESIClient) string
 
 }
 
-func GetStructureOwner(structureID int64, esiClient esiClient.ESIClient) string {
+func GetStructureOwner(structureID int64, esiClient models.ESIClient) string {
 	// Lookup structure owner
 	structure, _, err := esiClient.Client.ESI.UniverseApi.GetUniverseStructuresStructureId(esiClient.Ctx, int64(structureID), nil)
 	if err != nil {

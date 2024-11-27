@@ -5,14 +5,11 @@ import (
 	"net/http"
 
 	"github.com/antihax/goesi"
+	"github.com/huxcrux/eve-metrics/pkg/config"
+	"github.com/huxcrux/eve-metrics/pkg/models"
 )
 
-type ESIClient struct {
-	Ctx    context.Context
-	Client *goesi.APIClient
-}
-
-func NewESIClient(token string) ESIClient {
+func NewESIClient(token string) models.ESIClient {
 
 	// Create a custom transport with the token
 	customTransport := &customTransport{
@@ -25,13 +22,16 @@ func NewESIClient(token string) ESIClient {
 		Transport: customTransport,
 	}
 
+	config := config.ReadConfig()
+	proxyurl := config.ProxyURL
+
 	// Use the custom client with goesi
 	esiClient := goesi.NewAPIClient(httpClient, "eve-notifier")
-	esiClient.ChangeBasePath("http://127.0.0.1:8182")
+	esiClient.ChangeBasePath(proxyurl)
 
 	ctx := context.TODO()
 
-	return ESIClient{
+	return models.ESIClient{
 		Client: esiClient,
 		Ctx:    ctx,
 	}

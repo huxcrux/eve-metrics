@@ -7,7 +7,7 @@ import (
 	"github.com/huxcrux/eve-metrics/pkg/models"
 )
 
-func GetCharacterName(id int32, esiClient esiClient.ESIClient) string {
+func GetCharacterName(id int32, esiClient models.ESIClient) string {
 
 	// Get character name from id
 	character, _, err := esiClient.Client.ESI.CharacterApi.GetCharactersCharacterId(esiClient.Ctx, id, nil)

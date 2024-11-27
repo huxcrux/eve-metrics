@@ -5,6 +5,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/huxcrux/eve-metrics/pkg/config"
 	"github.com/huxcrux/eve-metrics/pkg/helpers"
 	"github.com/huxcrux/eve-metrics/pkg/models"
 	"github.com/prometheus/client_golang/prometheus"
@@ -19,7 +20,7 @@ type CachedCollector struct {
 }
 
 // NewCachedCollector creates a new CachedCollector
-func NewCachedCollector(characters []models.CharacterInput) *CachedCollector {
+func NewCachedCollector(characters []config.CharacterInput) *CachedCollector {
 
 	var localCharacters []models.Character
 	for _, character := range characters {

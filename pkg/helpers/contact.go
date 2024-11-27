@@ -1,8 +1,8 @@
 package helpers
 
-import esiClient "github.com/huxcrux/eve-metrics/pkg/esi_client"
+import "github.com/huxcrux/eve-metrics/pkg/models"
 
-func GetCharacterContactLabelName(lableID int64, charaterID int32, esiClient esiClient.ESIClient) string {
+func GetCharacterContactLabelName(lableID int64, charaterID int32, esiClient models.ESIClient) string {
 	// Get contact label name
 	contactLabel, _, err := esiClient.Client.ESI.ContactsApi.GetCharactersCharacterIdContactsLabels(esiClient.Ctx, charaterID, nil)
 	if err != nil {
@@ -18,7 +18,7 @@ func GetCharacterContactLabelName(lableID int64, charaterID int32, esiClient esi
 	return "Unknown"
 }
 
-func GetAllianceContactLabelName(lableID int64, allianceID int32, esiClient esiClient.ESIClient) string {
+func GetAllianceContactLabelName(lableID int64, allianceID int32, esiClient models.ESIClient) string {
 	// Get contact label name
 	contactLabel, _, err := esiClient.Client.ESI.ContactsApi.GetAlliancesAllianceIdContactsLabels(esiClient.Ctx, allianceID, nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func GetAllianceContactLabelName(lableID int64, allianceID int32, esiClient esiC
 	return "Unknown"
 }
 
-func GetCorporationContactLabelName(lableID int64, corporationID int32, esiClient esiClient.ESIClient) string {
+func GetCorporationContactLabelName(lableID int64, corporationID int32, esiClient models.ESIClient) string {
 	// Get contact label name
 	contactLabel, _, err := esiClient.Client.ESI.ContactsApi.GetCorporationsCorporationIdContactsLabels(esiClient.Ctx, corporationID, nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func GetCorporationContactLabelName(lableID int64, corporationID int32, esiClien
 	return "Unknown"
 }
 
-func GetContactName(contactType string, contactID int32, esiclient esiClient.ESIClient) string {
+func GetContactName(contactType string, contactID int32, esiclient models.ESIClient) string {
 	switch contactType {
 	case "character":
 		return GetCharacterName(contactID, esiclient)

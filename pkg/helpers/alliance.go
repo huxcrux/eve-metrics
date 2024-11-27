@@ -3,10 +3,10 @@ package helpers
 import (
 	"fmt"
 
-	esiClient "github.com/huxcrux/eve-metrics/pkg/esi_client"
+	"github.com/huxcrux/eve-metrics/pkg/models"
 )
 
-func GetAllianceName(id int32, esiClient esiClient.ESIClient) string {
+func GetAllianceName(id int32, esiClient models.ESIClient) string {
 	// Fetch owner alliance details
 	alliance, _, err := esiClient.Client.ESI.AllianceApi.GetAlliancesAllianceId(esiClient.Ctx, id, nil)
 	if err != nil {

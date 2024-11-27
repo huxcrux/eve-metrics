@@ -4,19 +4,46 @@ import (
 	"log"
 	"os"
 
-	"github.com/huxcrux/eve-metrics/pkg/models"
 	"gopkg.in/yaml.v3"
 )
-
-type Config struct {
-	Characters     []models.CharacterInput  `yaml:"characters"`
-	Notification   models.NotificationInput `yaml:"notifications"`
-	Discordwebhook string                   `yaml:"discordwebhook"`
-}
 
 var (
 	filePath = "config.yml"
 )
+
+type Config struct {
+	Characters     []CharacterInput  `yaml:"characters"`
+	Notification   NotificationInput `yaml:"notifications"`
+	Discordwebhook string            `yaml:"discordwebhook"`
+	ProxyURL       string            `yaml:"proxyurl"`
+}
+
+type CharacterInput struct {
+	ID    int    `yaml:"id"`
+	Token string `yaml:"token"`
+	Name  string `yaml:"name"`
+}
+
+type NotificationInput struct {
+	Alliances    []NotificationAlliancesInput  `yaml:"alliances"`
+	Corporations []NotificationCoporationInput `yaml:"corporations"`
+	Characters   []NotificationCharacterInput  `yaml:"characters"`
+}
+
+type NotificationAlliancesInput struct {
+	Character int32 `yaml:"character_id"`
+	ID        int32 `yaml:"id"`
+}
+
+type NotificationCoporationInput struct {
+	Character int32 `yaml:"character_id"`
+	ID        int32 `yaml:"id"`
+}
+
+type NotificationCharacterInput struct {
+	ID    int32  `yaml:"id"`
+	Token string `yaml:"token"`
+}
 
 func ReadConfig() Config {
 
